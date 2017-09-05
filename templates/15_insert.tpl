@@ -1,26 +1,8 @@
 {{- $tableNameSingular := .Table.Name | singular | titleCase -}}
 {{- $varNameSingular := .Table.Name | singular | camelCase -}}
 {{- $schemaTable := .Table.Name | .SchemaTable}}
-// InsertG a single record. See Insert for whitelist behavior description.
-func (o *{{$tableNameSingular}}) InsertG(whitelist ... string) error {
-	return o.Insert(boil.GetDB(), whitelist...)
-}
 
-// InsertGP a single record, and panics on error. See Insert for whitelist
-// behavior description.
-func (o *{{$tableNameSingular}}) InsertGP(whitelist ... string) {
-	if err := o.Insert(boil.GetDB(), whitelist...); err != nil {
-		panic(boil.WrapErr(err))
-	}
-}
 
-// InsertP a single record using an executor, and panics on error. See Insert
-// for whitelist behavior description.
-func (o *{{$tableNameSingular}}) InsertP(exec boil.Executor, whitelist ... string) {
-	if err := o.Insert(exec, whitelist...); err != nil {
-		panic(boil.WrapErr(err))
-	}
-}
 
 // Insert a single record using an executor.
 // Whitelist behavior: If a whitelist is provided, only those columns supplied are inserted

@@ -10,24 +10,9 @@ func (o *{{$tableNameSingular}}) DeleteP(exec boil.Executor) {
 	}
 }
 
-// DeleteG deletes a single {{$tableNameSingular}} record.
-// DeleteG will match against the primary key column to find the record to delete.
-func (o *{{$tableNameSingular}}) DeleteG() error {
-	if o == nil {
-	return errors.New("{{.PkgName}}: no {{$tableNameSingular}} provided for deletion")
-	}
 
-	return o.Delete(boil.GetDB())
-}
 
-// DeleteGP deletes a single {{$tableNameSingular}} record.
-// DeleteGP will match against the primary key column to find the record to delete.
-// Panics on error.
-func (o *{{$tableNameSingular}}) DeleteGP() {
-	if err := o.DeleteG(); err != nil {
-	panic(boil.WrapErr(err))
-	}
-}
+
 
 // Delete deletes a single {{$tableNameSingular}} record with an executor.
 // Delete will match against the primary key column to find the record to delete.
@@ -64,12 +49,6 @@ func (o *{{$tableNameSingular}}) Delete(exec boil.Executor) error {
 	return nil
 }
 
-// DeleteAllP deletes all rows, and panics on error.
-func (q {{$varNameSingular}}Query) DeleteAllP() {
-	if err := q.DeleteAll(); err != nil {
-	panic(boil.WrapErr(err))
-	}
-}
 
 // DeleteAll deletes all matching rows.
 func (q {{$varNameSingular}}Query) DeleteAll() error {
@@ -85,28 +64,6 @@ func (q {{$varNameSingular}}Query) DeleteAll() error {
 	}
 
 	return nil
-}
-
-// DeleteAllGP deletes all rows in the slice, and panics on error.
-func (o {{$tableNameSingular}}Slice) DeleteAllGP() {
-	if err := o.DeleteAllG(); err != nil {
-	panic(boil.WrapErr(err))
-	}
-}
-
-// DeleteAllG deletes all rows in the slice.
-func (o {{$tableNameSingular}}Slice) DeleteAllG() error {
-	if o == nil {
-	return errors.New("{{.PkgName}}: no {{$tableNameSingular}} slice provided for delete all")
-	}
-	return o.DeleteAll(boil.GetDB())
-}
-
-// DeleteAllP deletes all rows in the slice, using an executor, and panics on error.
-func (o {{$tableNameSingular}}Slice) DeleteAllP(exec boil.Executor) {
-	if err := o.DeleteAll(exec); err != nil {
-	panic(boil.WrapErr(err))
-	}
 }
 
 // DeleteAll deletes all rows in the slice, using an executor.

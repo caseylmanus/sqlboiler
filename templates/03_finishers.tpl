@@ -1,14 +1,5 @@
 {{- $tableNameSingular := .Table.Name | singular | titleCase -}}
 {{- $varNameSingular := .Table.Name | singular | camelCase -}}
-// OneP returns a single {{$varNameSingular}} record from the query, and panics on error.
-func (q {{$varNameSingular}}Query) OneP() (*{{$tableNameSingular}}) {
-	o, err := q.One()
-	if err != nil {
-		panic(boil.WrapErr(err))
-	}
-
-	return o
-}
 
 // One returns a single {{$varNameSingular}} record from the query.
 func (q {{$varNameSingular}}Query) One() (*{{$tableNameSingular}}, error) {
@@ -33,15 +24,6 @@ func (q {{$varNameSingular}}Query) One() (*{{$tableNameSingular}}, error) {
 	return o, nil
 }
 
-// AllP returns all {{$tableNameSingular}} records from the query, and panics on error.
-func (q {{$varNameSingular}}Query) AllP() {{$tableNameSingular}}Slice {
-	o, err := q.All()
-	if err != nil {
-		panic(boil.WrapErr(err))
-	}
-
-	return o
-}
 
 // All returns all {{$tableNameSingular}} records from the query.
 func (q {{$varNameSingular}}Query) All() ({{$tableNameSingular}}Slice, error) {
@@ -65,15 +47,7 @@ func (q {{$varNameSingular}}Query) All() ({{$tableNameSingular}}Slice, error) {
 	return o, nil
 }
 
-// CountP returns the count of all {{$tableNameSingular}} records in the query, and panics on error.
-func (q {{$varNameSingular}}Query) CountP() int64 {
-	c, err := q.Count()
-	if err != nil {
-		panic(boil.WrapErr(err))
-	}
 
-	return c
-}
 
 // Count returns the count of all {{$tableNameSingular}} records in the query.
 func (q {{$varNameSingular}}Query) Count() (int64, error) {
@@ -90,15 +64,7 @@ func (q {{$varNameSingular}}Query) Count() (int64, error) {
 	return count, nil
 }
 
-// Exists checks if the row exists in the table, and panics on error.
-func (q {{$varNameSingular}}Query) ExistsP() bool {
-	e, err := q.Exists()
-	if err != nil {
-		panic(boil.WrapErr(err))
-	}
 
-	return e
-}
 
 // Exists checks if the row exists in the table.
 func (q {{$varNameSingular}}Query) Exists() (bool, error) {

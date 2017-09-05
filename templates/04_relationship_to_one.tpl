@@ -4,10 +4,6 @@
 	{{- range .Table.FKeys -}}
 		{{- $txt := txtsFromFKey $dot.Tables $dot.Table . -}}
 		{{- $varNameSingular := .ForeignTable | singular | camelCase}}
-// {{$txt.Function.Name}}G pointed to by the foreign key.
-func (o *{{$txt.LocalTable.NameGo}}) {{$txt.Function.Name}}G(mods ...qm.QueryMod) {{$varNameSingular}}Query {
-	return o.{{$txt.Function.Name}}(boil.GetDB(), mods...)
-}
 
 // {{$txt.Function.Name}} pointed to by the foreign key.
 func (o *{{$txt.LocalTable.NameGo}}) {{$txt.Function.Name}}(exec boil.Executor, mods ...qm.QueryMod) ({{$varNameSingular}}Query) {

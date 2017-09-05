@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	"github.com/volatiletech/sqlboiler/boil"
+	"github.com/caseylmanus/sqlboiler/boil"
 )
 
 // joinKind is the type of join
@@ -96,11 +96,6 @@ func Raw(exec boil.Executor, query string, args ...interface{}) *Query {
 	}
 }
 
-// RawG makes a raw query using the global boil.Executor, usually for use with bind
-func RawG(query string, args ...interface{}) *Query {
-	return Raw(boil.GetDB(), query, args...)
-}
-
 // Exec executes a query that does not need a row returned
 func (q *Query) Exec() (sql.Result, error) {
 	qs, args := buildQuery(q)
@@ -131,27 +126,6 @@ func (q *Query) Query() (*sql.Rows, error) {
 	return q.executor.Query(qs, args...)
 }
 
-// ExecP executes a query that does not need a row returned
-// It will panic on error
-func (q *Query) ExecP() sql.Result {
-	res, err := q.Exec()
-	if err != nil {
-		panic(boil.WrapErr(err))
-	}
-
-	return res
-}
-
-// QueryP executes the query for the All finisher and returns multiple rows
-// It will panic on error
-func (q *Query) QueryP() *sql.Rows {
-	rows, err := q.Query()
-	if err != nil {
-		panic(boil.WrapErr(err))
-	}
-
-	return rows
-}
 
 // SetExecutor on the query.
 func SetExecutor(q *Query, exec boil.Executor) {

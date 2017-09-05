@@ -2,28 +2,9 @@
 {{- $varNameSingular := .Table.Name | singular | camelCase -}}
 {{- $varNamePlural := .Table.Name | plural | camelCase -}}
 {{- $schemaTable := .Table.Name | .SchemaTable}}
-// ReloadGP refetches the object from the database and panics on error.
-func (o *{{$tableNameSingular}}) ReloadGP() {
-	if err := o.ReloadG(); err != nil {
-		panic(boil.WrapErr(err))
-	}
-}
 
-// ReloadP refetches the object from the database with an executor. Panics on error.
-func (o *{{$tableNameSingular}}) ReloadP(exec boil.Executor) {
-	if err := o.Reload(exec); err != nil {
-		panic(boil.WrapErr(err))
-	}
-}
 
-// ReloadG refetches the object from the database using the primary keys.
-func (o *{{$tableNameSingular}}) ReloadG() error {
-	if o == nil {
-		return errors.New("{{.PkgName}}: no {{$tableNameSingular}} provided for reload")
-	}
 
-	return o.Reload(boil.GetDB())
-}
 
 // Reload refetches the object from the database
 // using the primary keys with an executor.
@@ -35,34 +16,6 @@ func (o *{{$tableNameSingular}}) Reload(exec boil.Executor) error {
 
 	*o = *ret
 	return nil
-}
-
-// ReloadAllGP refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-// Panics on error.
-func (o *{{$tableNameSingular}}Slice) ReloadAllGP() {
-	if err := o.ReloadAllG(); err != nil {
-		panic(boil.WrapErr(err))
-	}
-}
-
-// ReloadAllP refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-// Panics on error.
-func (o *{{$tableNameSingular}}Slice) ReloadAllP(exec boil.Executor) {
-	if err := o.ReloadAll(exec); err != nil {
-		panic(boil.WrapErr(err))
-	}
-}
-
-// ReloadAllG refetches every row with matching primary key column values
-// and overwrites the original object slice with the newly updated slice.
-func (o *{{$tableNameSingular}}Slice) ReloadAllG() error {
-	if o == nil {
-		return errors.New("{{.PkgName}}: empty {{$tableNameSingular}}Slice provided for reload all")
-	}
-
-	return o.ReloadAll(boil.GetDB())
 }
 
 // ReloadAll refetches every row with matching primary key column values

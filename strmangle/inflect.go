@@ -157,7 +157,7 @@ func newBoilRuleset() *inflect.Ruleset {
 	rs.AddSingular("wies", "wy")
 	rs.AddSingular("xies", "xy")
 	rs.AddSingular("zies", "zy")
-	rs.AddSingular("series", "series")
+	rs.AddSingular("series", "seriesEntry")
 	rs.AddSingular("movies", "movie")
 	rs.AddSingular("xes", "x")
 	rs.AddSingular("ches", "ch")
