@@ -1,17 +1,6 @@
 {{- $tableNameSingular := .Table.Name | singular | titleCase -}}
 {{- $varNameSingular := .Table.Name | singular | camelCase -}}
 {{- $schemaTable := .Table.Name | .SchemaTable}}
-// DeleteP deletes a single {{$tableNameSingular}} record with an executor.
-// DeleteP will match against the primary key column to find the record to delete.
-// Panics on error.
-func (o *{{$tableNameSingular}}) DeleteP(exec boil.Executor) {
-	if err := o.Delete(exec); err != nil {
-	panic(boil.WrapErr(err))
-	}
-}
-
-
-
 
 
 // Delete deletes a single {{$tableNameSingular}} record with an executor.
@@ -49,71 +38,3 @@ func (o *{{$tableNameSingular}}) Delete(exec boil.Executor) error {
 	return nil
 }
 
-
-// DeleteAll deletes all matching rows.
-func (q {{$varNameSingular}}Query) DeleteAll() error {
-	if q.Query == nil {
-	return errors.New("{{.PkgName}}: no {{$varNameSingular}}Query provided for delete all")
-	}
-
-	queries.SetDelete(q.Query)
-
-	_, err := q.Query.Exec()
-	if err != nil {
-	return errors.Wrap(err, "{{.PkgName}}: unable to delete all from {{.Table.Name}}")
-	}
-
-	return nil
-}
-
-// DeleteAll deletes all rows in the slice, using an executor.
-func (o {{$tableNameSingular}}Slice) DeleteAll(exec boil.Executor) error {
-	if o == nil {
-		return errors.New("{{.PkgName}}: no {{$tableNameSingular}} slice provided for delete all")
-	}
-
-	if len(o) == 0 {
-		return nil
-	}
-
-	{{if not .NoHooks -}}
-	if len({{$varNameSingular}}BeforeDeleteHooks) != 0 {
-		for _, obj := range o {
-			if err := obj.doBeforeDeleteHooks(exec); err != nil {
-				return err
-			}
-		}
-	}
-	{{- end}}
-
-	var args []interface{}
-	for _, obj := range o {
-		pkeyArgs := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(obj)), {{$varNameSingular}}PrimaryKeyMapping)
-		args = append(args, pkeyArgs...)
-	}
-
-	sql := "DELETE FROM {{$schemaTable}} WHERE " +
-		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), {{if .Dialect.IndexPlaceholders}}1{{else}}0{{end}}, {{$varNameSingular}}PrimaryKeyColumns, len(o))
-
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, sql)
-		fmt.Fprintln(boil.DebugWriter, args)
-	}
-
-	_, err := exec.Exec(sql, args...)
-	if err != nil {
-		return errors.Wrap(err, "{{.PkgName}}: unable to delete all from {{$varNameSingular}} slice")
-	}
-
-	{{if not .NoHooks -}}
-	if len({{$varNameSingular}}AfterDeleteHooks) != 0 {
-		for _, obj := range o {
-			if err := obj.doAfterDeleteHooks(exec); err != nil {
-				return err
-			}
-		}
-	}
-	{{- end}}
-
-	return nil
-}

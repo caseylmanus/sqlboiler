@@ -17,12 +17,6 @@ func (o *{{$tableNameSingular}}) Insert(exec boil.Executor, whitelist ... string
 	var err error
 	{{- template "timestamp_insert_helper" . }}
 
-	{{if not .NoHooks -}}
-	if err := o.doBeforeInsertHooks(exec); err != nil {
-		return err
-	}
-	{{- end}}
-
 	nzDefaults := queries.NonZeroDefaultSet({{$varNameSingular}}ColumnsWithDefault, o)
 
 	key := makeCacheKey(whitelist, nzDefaults)
@@ -79,10 +73,6 @@ func (o *{{$tableNameSingular}}) Insert(exec boil.Executor, whitelist ... string
 	value := reflect.Indirect(reflect.ValueOf(o))
 	vals := queries.ValuesFromMapping(value, cache.valueMapping)
 
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.query)
-		fmt.Fprintln(boil.DebugWriter, vals)
-	}
 
 	{{if .UseLastInsertID -}}
 	{{- $canLastInsertID := .Table.CanLastInsertID -}}
@@ -124,12 +114,6 @@ func (o *{{$tableNameSingular}}) Insert(exec boil.Executor, whitelist ... string
 		o.{{. | titleCase}},
 		{{end -}}
 	}
-
-	if boil.DebugMode {
-		fmt.Fprintln(boil.DebugWriter, cache.retQuery)
-		fmt.Fprintln(boil.DebugWriter, identifierCols...)
-	}
-
 	err = exec.QueryRow(cache.retQuery, identifierCols...).Scan(queries.PtrsFromMapping(value, cache.retMapping)...)
 	if err != nil {
 		return errors.Wrap(err, "{{.PkgName}}: unable to populate default values for {{.Table.Name}}")
@@ -154,10 +138,5 @@ CacheNoHooks:
 		{{$varNameSingular}}InsertCache[key] = cache
 		{{$varNameSingular}}InsertCacheMut.Unlock()
 	}
-
-	{{if not .NoHooks -}}
-	return o.doAfterInsertHooks(exec)
-	{{- else -}}
 	return nil
-	{{- end}}
 }
