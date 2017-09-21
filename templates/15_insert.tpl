@@ -140,3 +140,14 @@ CacheNoHooks:
 	}
 	return nil
 }
+
+//Upsert updates if id != 0 else inserts the {{$tableNameSingular}}
+func (o *{{$tableNameSingular}}) Upsert(exec boil.Executor, whitelist ... string) error {
+	var err error
+	if o.ID == 0 {
+		err = o.Insert(exec, whitelist...)
+	} else  {
+		err = o.Update(exec, whitelist...)
+	}
+	return err
+}

@@ -5,7 +5,7 @@
 		{{- $txt := txtsFromFKey $dot.Tables $dot.Table . -}}
 		{{- $varNameSingular := .ForeignTable | singular | camelCase}}
 
-// {{$txt.Function.Name}} pointed to by the foreign key.
+// Get{{$txt.Function.Name}} pointed to by the foreign key.
 func (o *{{$txt.LocalTable.NameGo}}) Get{{$txt.Function.Name}}(exec boil.Executor, mods ...qm.QueryMod) ({{$varNameSingular}}Query) {
 	queryMods := []qm.QueryMod{
 		qm.Where("{{$txt.ForeignTable.ColumnName}}=?", o.{{$txt.LocalTable.ColumnNameGo}}),

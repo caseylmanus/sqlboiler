@@ -44,18 +44,6 @@ func generateOutput(state *State, data *templateData) error {
 	})
 }
 
-// generateTestOutput builds the test file output and sends it to outHandler for saving
-func generateTestOutput(state *State, data *templateData) error {
-	return executeTemplates(executeTemplateData{
-		state:                state,
-		data:                 data,
-		templates:            state.TestTemplates,
-		importSet:            state.Importer.TestStandard,
-		combineImportsOnType: false,
-		fileSuffix:           "_test.go",
-	})
-}
-
 // generateSingletonOutput processes the templates that should only be run
 // one time.
 func generateSingletonOutput(state *State, data *templateData) error {
@@ -64,18 +52,6 @@ func generateSingletonOutput(state *State, data *templateData) error {
 		data:           data,
 		templates:      state.SingletonTemplates,
 		importNamedSet: state.Importer.Singleton,
-		fileSuffix:     ".go",
-	})
-}
-
-// generateSingletonTestOutput processes the templates that should only be run
-// one time.
-func generateSingletonTestOutput(state *State, data *templateData) error {
-	return executeSingletonTemplates(executeTemplateData{
-		state:          state,
-		data:           data,
-		templates:      state.SingletonTestTemplates,
-		importNamedSet: state.Importer.TestSingleton,
 		fileSuffix:     ".go",
 	})
 }

@@ -8,14 +8,7 @@
 // No whitelist behavior: Without a whitelist, columns are inferred by the following rules:
 // - All columns are inferred to start with
 // - All primary keys are subtracted from this set
-// Update does not automatically update the record in case of default values. Use .Reload()
-// to refresh the records.
-func (o *{{$tableNameSingular}}) Update(exec boil.Executor, whitelist 
-	{{if not .NoHooks -}}
-	if err := o.doBeforeInsertHooks(exec); err != nil {
-		return err
-	}
-	{{- end}}... string) error {
+func (o *{{$tableNameSingular}}) Update(exec boil.Executor, whitelist ... string) error {
 	{{- template "timestamp_update_helper" . -}}
 
 	var err error

@@ -12,11 +12,11 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/pkg/errors"
 	"github.com/caseylmanus/sqlboiler/bdb"
 	"github.com/caseylmanus/sqlboiler/bdb/drivers"
 	"github.com/caseylmanus/sqlboiler/queries"
 	"github.com/caseylmanus/sqlboiler/strmangle"
+	"github.com/pkg/errors"
 )
 
 const (
@@ -118,16 +118,6 @@ func (s *State) Run(includeTests bool) error {
 		return errors.Wrap(err, "singleton template output")
 	}
 
-	if !s.Config.NoTests && includeTests {
-		if err := generateTestMainOutput(s, singletonData); err != nil {
-			return errors.Wrap(err, "unable to generate TestMain output")
-		}
-
-		if err := generateSingletonTestOutput(s, singletonData); err != nil {
-			return errors.Wrap(err, "unable to generate singleton test template output")
-		}
-	}
-
 	for _, table := range s.Tables {
 		if table.IsJoinTable {
 			continue
@@ -153,13 +143,6 @@ func (s *State) Run(includeTests bool) error {
 		// Generate the regular templates
 		if err := generateOutput(s, data); err != nil {
 			return errors.Wrap(err, "unable to generate output")
-		}
-
-		// Generate the test templates
-		if !s.Config.NoTests && includeTests {
-			if err := generateTestOutput(s, data); err != nil {
-				return errors.Wrap(err, "unable to generate test output")
-			}
 		}
 	}
 
@@ -189,23 +172,6 @@ func (s *State) initTemplates() error {
 	s.SingletonTemplates, err = loadTemplates(filepath.Join(basePath, templatesSingletonDirectory))
 	if err != nil {
 		return err
-	}
-
-	if !s.Config.NoTests {
-		s.TestTemplates, err = loadTemplates(filepath.Join(basePath, templatesTestDirectory))
-		if err != nil {
-			return err
-		}
-
-		s.SingletonTestTemplates, err = loadTemplates(filepath.Join(basePath, templatesSingletonTestDirectory))
-		if err != nil {
-			return err
-		}
-
-		s.TestMainTemplate, err = loadTemplate(filepath.Join(basePath, templatesTestMainDirectory), s.Config.DriverName+"_main.tpl")
-		if err != nil {
-			return err
-		}
 	}
 
 	return s.processReplacements()
