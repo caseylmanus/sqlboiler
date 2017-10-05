@@ -386,7 +386,7 @@ func newImporter() importer {
 		"apd.NullDecimal": {
 			thirdParty: importList{`"github.com/caseylmanus/apd"`},
 		},
-		"apd.Deccimal": {
+		"apd.Decimal": {
 			thirdParty: importList{`"github.com/caseylmanus/apd"`},
 		},
 	}

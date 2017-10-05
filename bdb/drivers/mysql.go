@@ -321,7 +321,7 @@ func (m *MySQLDriver) TranslateColumnType(c bdb.Column) bdb.Column {
 		case "json":
 			c.Type = "types.JSON"
 		case "decimal":
-			c.Type = "apd.Decimal"
+			c.Type = "apd.NullDecimal"
 		default:
 			c.Type = "null.String"
 		}
@@ -373,7 +373,7 @@ func (m *MySQLDriver) TranslateColumnType(c bdb.Column) bdb.Column {
 		case "json":
 			c.Type = "types.JSON"
 		case "decimal":
-			c.Type = "apd.NullDecimal"
+			c.Type = "apd.Decimal"
 		default:
 			c.Type = "string"
 		}
