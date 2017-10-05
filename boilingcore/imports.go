@@ -383,6 +383,12 @@ func newImporter() importer {
 		"types.Hstore": {
 			thirdParty: importList{`"github.com/caseylmanus/sqlboiler/types"`},
 		},
+		"apd.NullDecimal": {
+			thirdParty: importList{`"github.com/caseylmanus/apd"`},
+		},
+		"apd.Deccimal": {
+			thirdParty: importList{`"github.com/caseylmanus/apd"`},
+		},
 	}
 
 	return imp

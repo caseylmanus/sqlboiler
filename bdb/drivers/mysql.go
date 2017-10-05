@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/caseylmanus/sqlboiler/bdb"
 	"github.com/go-sql-driver/mysql"
 	"github.com/pkg/errors"
-	"github.com/caseylmanus/sqlboiler/bdb"
 )
 
 // TinyintAsBool is a global that is set from main.go if a user specifies
@@ -320,6 +320,8 @@ func (m *MySQLDriver) TranslateColumnType(c bdb.Column) bdb.Column {
 			c.Type = "null.Bytes"
 		case "json":
 			c.Type = "types.JSON"
+		case "decimal":
+			c.Type = "apd.Decimal"
 		default:
 			c.Type = "null.String"
 		}
@@ -370,6 +372,8 @@ func (m *MySQLDriver) TranslateColumnType(c bdb.Column) bdb.Column {
 			c.Type = "[]byte"
 		case "json":
 			c.Type = "types.JSON"
+		case "decimal":
+			c.Type = "apd.NullDecimal"
 		default:
 			c.Type = "string"
 		}
