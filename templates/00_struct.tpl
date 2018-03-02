@@ -8,7 +8,7 @@
 // {{$modelName}} is an object representing the database table.
 type {{$modelName}} struct {
 	{{range $column := .Table.Columns -}}
-	{{titleCase $column.Name}} {{$column.Type}} `boil:"{{$column.Name}}" json:"{{titleCase $column.Name}}{{if $column.Nullable}},omitempty{{end}}"`
+	{{titleCase $column.Name}} {{$column.Type}} `boil:"{{$column.Name}}" json:"{{camelCase $column.Name}}{{if $column.Nullable}},omitempty{{end}}"`
 	{{end -}}
 	{{- if .Table.IsJoinTable -}}
 	{{- else}}
